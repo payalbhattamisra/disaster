@@ -109,7 +109,7 @@ return(
               </figure>
               <ul>
                 {card.details.map((item, i) => (
-                  <li key={i}>{item}</li>
+                  <li key={i} style={{textAlign:'center'}}>{item}</li>
                 ))}
               </ul>
             </div>
