@@ -65,6 +65,9 @@ const LandingPage=()=>{
    if(title ==='Victim Support'){
       navigate('/victim');
    }
+   else if(title ==='Volunteer Module'){
+      navigate('/volunter');
+   }
   }
 return(
      <>
