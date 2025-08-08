@@ -1,26 +1,33 @@
-const express=require("express");
-const router=express.Router();
-const VictimRequest=require("../models/VictimRequest");
-const multer=require("multer");
+const express = require("express");
+const router = express.Router();
+const VictimRequest = require("../models/VictimRequest");
+const multer = require("multer");
 const path = require("path");
 
-
-// Multer (used for handling file uploads), cb stands for callback. It’s a function that you must call to let Multer know that:
-// You’re done handling the current step (like setting the destination or filename).
-// You’re passing control back to Multer so it can proceed.
-// Photo upload config
-
+// Multer config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads")); // safe absolute path
+    cb(null, path.join(__dirname, "../uploads"));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
   }
 });
-
 const upload = multer({ storage });
-//post request
+
+// Helper to extract lat/lng from string
+function parseLatLng(location) {
+  try {
+    const regex = /Lat:([\d.-]+),Lng:([\d.-]+)/;
+    const match = location.match(regex);
+    if (!match) return [null, null];
+    return [parseFloat(match[1]), parseFloat(match[2])];
+  } catch (err) {
+    return [null, null];
+  }
+}
+
+// POST /api/victims/submit
 router.post("/submit", upload.single("photo"), async (req, res) => {
   try {
     const {
@@ -35,7 +42,7 @@ router.post("/submit", upload.single("photo"), async (req, res) => {
 
     const photo = req.file ? req.file.filename : null;
 
-    const newRequest = new VictimRequest({
+    const newVictimRequest = new VictimRequest({
       name,
       contact,
       location,
@@ -46,12 +53,61 @@ router.post("/submit", upload.single("photo"), async (req, res) => {
       photo,
     });
 
-    await newRequest.save();
+    await newVictimRequest.save(); // Save to victimrequests
+
+    // Parse lat/lng for map
+    const [lat, lng] = parseLatLng(location);
+    if (!lat || !lng) {
+      return res.status(400).json({ error: "Invalid location format" });
+    }
+
+    // Save to requests collection
+    const newMapRequest = new Request({
+      type: typeOfHelp,
+      urgency,
+      address: location,
+      lat,
+      lng,
+      status: "Pending",
+    });
+
+    await newMapRequest.save(); // Save to requests collection
 
     res.status(201).json({ message: "Request saved successfully." });
   } catch (error) {
-    console.error("Error saving request:", error); // Log real error
+    console.error("Error saving request:", error);
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+// GET /api/victim/all
+router.get("/all", async (req, res) => {
+  try {
+    const victims = await VictimRequest.find();
+
+    // Convert "Lat:xx,Lng:yy" string into latitude & longitude fields
+    const formatted = victims.map(v => {
+      let latitude = null;
+      let longitude = null;
+      if (v.location) {
+        const match = v.location.match(/Lat:([\d.-]+),Lng:([\d.-]+)/);
+        if (match) {
+          latitude = parseFloat(match[1]);
+          longitude = parseFloat(match[2]);
+        }
+      }
+      return {
+        ...v._doc,
+        latitude,
+        longitude
+      };
+    });
+
+    res.json(formatted);
+  } catch (err) {
+    console.error("Error fetching victims:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 module.exports = router;

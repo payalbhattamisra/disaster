@@ -1,0 +1,45 @@
+.dashboard {
+  display: flex;
+}
+
+.map-container {
+  flex: 3;
+}
+
+.sidebar {
+  flex: 1;
+  background: #1e1e2f;
+  color: #fff;
+  padding: 20px;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.request-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(5px);
+  border: 1px solid #444;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #00bfa5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #00e0ba;
+}
+
+.points-section {
+  background: #333;
+  padding: 10px;
+  border-radius: 10px;
+}

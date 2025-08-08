@@ -68,6 +68,9 @@ const LandingPage=()=>{
    else if(title ==='Volunteer Module'){
       navigate('/volunter');
    }
+   else if(title ==='News Feed'){
+      navigate('/news');
+   }
   }
 return(
      <>

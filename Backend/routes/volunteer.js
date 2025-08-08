@@ -3,7 +3,7 @@ const router = express.Router();
 const Volunteer = require("../models/Volunteer");  
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const VictimRequest=require("../models/VictimRequest")
 // Signup Route
 router.post("/signup", async (req, res) => {
   try {
@@ -40,6 +40,17 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.error("❌ Login error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// GET all victim requests
+router.get("/all", async (req, res) => {
+  try {
+    const requests = await VictimRequest.find();
+    res.json(requests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
