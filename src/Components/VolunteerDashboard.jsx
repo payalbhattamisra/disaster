@@ -25,34 +25,99 @@ const VolunteerDashboard = () => {
     return "Bronze";
   };
 
-  // Helper to parse "Lat:...,Lng:..." into numbers
+  // Parse "Lat:...,Lng:..." into numbers
   const parseLatLng = (locationStr) => {
     const latMatch = locationStr.match(/Lat:([\d.-]+)/);
     const lngMatch = locationStr.match(/Lng:([\d.-]+)/);
     if (latMatch && lngMatch) {
       return {
         lat: parseFloat(latMatch[1]),
-        lng: parseFloat(lngMatch[1])
+        lng: parseFloat(lngMatch[1]),
       };
     }
     return null;
   };
 
+  // Geocode a name-based location like "Delhi" then convert to coordinates
+  const geocodeLocation = async (locationName) => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          locationName
+        )}`
+      );
+      const data = await res.json();
+      if (data.length > 0) {
+        return {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon),
+        };
+      }
+    } catch (error) {
+      console.error("Geocoding failed:", error);
+    }
+    return null;
+  };
+
+  // Spread duplicate coordinates in a small circle so markers are clickable
+  const adjustDuplicateCoords = (items) => {
+    // Copy items (avoid mutating original)
+    const result = items.map((it) => ({ ...it }));
+
+    // Group indices by rounded coordinate key (tolerates tiny float diffs)
+    const groups = {};
+    result.forEach((it, idx) => {
+      const key = `${it.latitude.toFixed(6)},${it.longitude.toFixed(6)}`;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(idx);
+    });
+
+    // For each group with >1 item, spread them around a circle
+    Object.values(groups).forEach((indices) => {
+      if (indices.length <= 1) return;
+
+      const n = indices.length;
+      const radius = 0.0004; // ~44 meters (tune as needed)
+      for (let i = 0; i < n; i++) {
+        const idx = indices[i];
+        const angle = (2 * Math.PI * i) / n;
+        const deltaLat = radius * Math.cos(angle);
+        const deltaLng = radius * Math.sin(angle);
+        result[idx].latitude = result[idx].latitude + deltaLat;
+        result[idx].longitude = result[idx].longitude + deltaLng;
+      }
+    });
+
+    return result;
+  };
+
   useEffect(() => {
-    fetch("http://localhost:5000/api/victim/all") // Your endpoint
-      .then((res) => res.json())
-      .then((data) => {
-        const parsedData = data
-          .map((req) => {
-            const coords = parseLatLng(req.location || "");
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/victim/all");
+        const data = await res.json();
+
+        const parsedData = await Promise.all(
+          data.map(async (req) => {
+            let coords = parseLatLng(req.location || "");
+            if (!coords && req.location) {
+              coords = await geocodeLocation(req.location);
+            }
             return coords
               ? { ...req, latitude: coords.lat, longitude: coords.lng }
               : null;
           })
-          .filter(Boolean); // remove nulls
-        setVictimRequests(parsedData);
-      })
-      .catch((err) => console.error("Error fetching victim requests:", err));
+        );
+
+        // filter nulls and adjust duplicates
+        const cleaned = parsedData.filter(Boolean);
+        setVictimRequests(adjustDuplicateCoords(cleaned));
+      } catch (err) {
+        console.error("Error fetching victim requests:", err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -83,13 +148,13 @@ const VolunteerDashboard = () => {
               position={[req.latitude, req.longitude]}
             >
               <Popup>
+                <strong>Name:</strong> {req.name || "N/A"} <br />
                 <strong>Location:</strong> {req.location || "Unknown"} <br />
                 <strong>Details:</strong> {req.description || "N/A"} <br />
                 <strong>Contact:</strong> {req.contact || "N/A"} <br />
                 <strong>Help Needed:</strong> {req.typeOfHelp || "N/A"} <br />
                 <strong>Urgency:</strong> {req.urgency || "N/A"} <br />
                 <strong>People Count:</strong> {req.peopleCount || "N/A"}
-                 
               </Popup>
             </Marker>
           ))}
