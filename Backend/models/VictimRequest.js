@@ -27,6 +27,11 @@ const victimRequestSchema =new mongoose.Schema({
     photo:{
         type:String
     },
+    status: {
+    type: String,
+    enum: ["Pending", "In Progress", "Completed"],
+    default: "Pending"
+  },
     timestamp:{
         type:Date,
         default:Date.now

@@ -90,6 +90,27 @@ const VolunteerDashboard = () => {
 
     return result;
   };
+  const updateStatus = async (id, newStatus) => {
+  try {
+    const res = await fetch(`http://localhost:5000/api/victim/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const updated = await res.json();
+
+    setVictimRequests((prev) =>
+      prev.map((req) => (req._id === id ? updated : req))
+    );
+
+    if (newStatus === "Completed") {
+       setPoints((prevPoints) => prevPoints + 10);
+      alert("✅ Request completed successfully!");
+    }
+  } catch (err) {
+    console.error("Error updating status:", err);
+  }
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -155,6 +176,23 @@ const VolunteerDashboard = () => {
                 <strong>Help Needed:</strong> {req.typeOfHelp || "N/A"} <br />
                 <strong>Urgency:</strong> {req.urgency || "N/A"} <br />
                 <strong>People Count:</strong> {req.peopleCount || "N/A"}
+                <strong>Status:</strong> {req.status} <br /><br />
+
+              {req.status === "Pending" && (
+                <button
+                  onClick={() => updateStatus(req._id, "In Progress")}
+                >
+                  Accept Request
+                </button>
+              )}
+
+              {req.status === "In Progress" && (
+                <button
+                  onClick={() => updateStatus(req._id, "Completed")}
+                >
+                  Mark as Completed
+                </button>
+              )}
               </Popup>
             </Marker>
           ))}

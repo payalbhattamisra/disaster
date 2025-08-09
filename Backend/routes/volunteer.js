@@ -43,15 +43,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// GET all victim requests
-router.get("/all", async (req, res) => {
-  try {
-    const requests = await VictimRequest.find();
-    res.json(requests);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
-  }
-});
+ 
 
 module.exports = router;

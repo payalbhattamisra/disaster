@@ -109,5 +109,36 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// Update status
+router.patch("/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!["Pending", "In Progress", "Completed"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    const updated = await VictimRequest.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ error: "Request not found" });
+
+    let latitude = null;
+    let longitude = null;
+    if (updated.location) {
+      const match = updated.location.match(/Lat:([\d.-]+),Lng:([\d.-]+)/);
+      if (match) {
+        latitude = parseFloat(match[1]);
+        longitude = parseFloat(match[2]);
+      }
+    }
+
+    res.json({ ...updated._doc, latitude, longitude });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
