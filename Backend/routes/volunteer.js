@@ -3,7 +3,7 @@ const router = express.Router();
 const Volunteer = require("../models/Volunteer");  
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const VictimRequest=require("../models/VictimRequest")
+ 
 // Signup Route
 router.post("/signup", async (req, res) => {
   try {
