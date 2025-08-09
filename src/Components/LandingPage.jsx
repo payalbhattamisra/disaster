@@ -71,6 +71,9 @@ const LandingPage=()=>{
    else if(title ==='News Feed'){
       navigate('/news');
    }
+    else if(title ==='NGO Dashboard'){
+      navigate('/ngo');
+   }
   }
 return(
      <>

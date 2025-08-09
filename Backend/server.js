@@ -22,7 +22,8 @@ app.use("/api/victim", victimRoutes);
 const volunteerRoutes = require("./routes/volunteer");
 app.use("/api/volunteer", volunteerRoutes);
 
- 
+const ngoRoutes=require("./routes/ngo");
+app.use("/api/ngo",ngoRoutes);
 
 // Connect to MongoDB
 require('dotenv').config({ path: __dirname + '/.env' }); // Force load from backend

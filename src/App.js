@@ -7,7 +7,7 @@ import Volunter from './Components/Volunter.jsx';
 import VolunteerDashboard from './Components/VolunteerDashboard.jsx';
 import NewsFeed from './Components/news.jsx';
 import "leaflet/dist/leaflet.css";
-
+import Ngo from './Components/ngo.jsx';
 function App() {
   return (
      <Router>
@@ -17,6 +17,7 @@ function App() {
             <Route path="/volunter" element={<Volunter/>}/> 
             <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
             <Route path="/news"element={<NewsFeed/>}/>
+            <Route path="/ngo"element={<Ngo/>}/>
         </Routes>
      </Router>
   );
