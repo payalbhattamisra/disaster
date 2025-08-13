@@ -1,0 +1,68 @@
+.ngo-dashboard {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.stats-cards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pending { background-color: #f39c12; }
+.in-progress { background-color: #2980b9; }
+.resolved { background-color: #27ae60; }
+
+.volunteer-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.volunteer-section th, .volunteer-section td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.inventory-section ul, .low-stock ul {
+  list-style: none;
+  padding: 0;
+}
+
+.low-stock {
+  background-color: #ffefef;
+  border: 1px solid #e74c3c;
+  padding: 10px;
+  margin: 15px 0;
+}
+
+.graphs-maps .placeholder {
+  background-color: #f4f4f4;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+}
+
+.alerts button {
+  margin-right: 10px;
+  padding: 8px 15px;
+  border: none;
+  color: white;
+  background-color: #3498db;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.alerts button:hover {
+  background-color: #2980b9;
+}

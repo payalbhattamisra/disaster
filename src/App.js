@@ -8,6 +8,7 @@ import VolunteerDashboard from './Components/VolunteerDashboard.jsx';
 import NewsFeed from './Components/news.jsx';
 import "leaflet/dist/leaflet.css";
 import Ngo from './Components/ngo.jsx';
+import NgoDashboard from './Components/ngoDashboard.jsx';
 function App() {
   return (
      <Router>
@@ -18,6 +19,7 @@ function App() {
             <Route path="/volunteer-dashboard" element={<VolunteerDashboard />} />
             <Route path="/news"element={<NewsFeed/>}/>
             <Route path="/ngo"element={<Ngo/>}/>
+            <Route path="/ngo-dashboard" element={<NgoDashboard/>}/>
         </Routes>
      </Router>
   );
