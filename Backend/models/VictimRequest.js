@@ -32,6 +32,7 @@ const victimRequestSchema =new mongoose.Schema({
     enum: ["Pending", "In Progress", "Completed"],
     default: "Pending"
   },
+   assignedVolunteer: { type: mongoose.Schema.Types.ObjectId, ref: "Volunteer", default: null },
     timestamp:{
         type:Date,
         default:Date.now

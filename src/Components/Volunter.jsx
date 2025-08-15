@@ -8,7 +8,20 @@ const Volunteer = () => {
     email: "",
     password: ""
   });
- 
+  const [location, setLocation] = useState({ lat: "", lng: "" });
+ const getLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        });
+      },
+      () => alert("Unable to get location")
+    );
+  }
+};
   const toggleForm = () => {
     setIsSignup(!isSignup);
     setFormData({ name: "", email: "", password: "" });
@@ -18,30 +31,34 @@ const Volunteer = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const url = isSignup
-      ? "http://localhost:5000/api/volunteer/signup"
-      : "http://localhost:5000/api/volunteer/login";
-
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Something went wrong");
-
-      alert(`✅ ${isSignup ? "Signup" : "Login"} successful!`);
-      localStorage.setItem("volunteerToken", data.token);
-      window.location.href = "/volunteer-dashboard";
-    } catch (err) {
-      alert("❌ " + err.message);
-    }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const payload = {
+    ...formData,
+    ...(isSignup ? location : {}) // only send location on signup
   };
 
+  const url = isSignup
+    ? "http://localhost:5000/api/volunteer/signup"
+    : "http://localhost:5000/api/volunteer/login";
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Something went wrong");
+
+    alert(`✅ ${isSignup ? "Signup" : "Login"} successful!`);
+    localStorage.setItem("volunteerToken", data.token);
+    window.location.href = "/volunteer-dashboard";
+  } catch (err) {
+    alert("❌ " + err.message);
+  }
+};
   return (
     <div
     className="volunteer-auth-wrapper"
@@ -59,6 +76,8 @@ const Volunteer = () => {
       <h2>{isSignup ? "Volunteer Signup" : "Volunteer Login"}</h2>
       <form onSubmit={handleSubmit} className="volunteer-form">
   {isSignup && (
+  <>
+    {/* Full Name */}
     <div className="input-group">
       <i className="fas fa-user"></i>
       <input
@@ -71,7 +90,19 @@ const Volunteer = () => {
         required
       />
     </div>
-  )}
+
+    {/* Get Current Location */}
+    <button
+      type="button"
+      className="location-btn"
+      onClick={getLocation}
+    >
+      📍 Get Current Location
+    </button>
+  </>
+)}
+
+
   <div className="input-group">
     <i className="fas fa-envelope"></i>
     <input

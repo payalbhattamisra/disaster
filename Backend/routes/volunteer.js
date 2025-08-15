@@ -7,13 +7,23 @@ const jwt = require("jsonwebtoken");
 // Signup Route
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, lat, lng } = req.body;
 
     const existing = await Volunteer.findOne({ email });
     if (existing) return res.status(400).json({ message: "User already exists" });
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = new Volunteer({ name, email, password: hashed });
+
+    const user = new Volunteer({
+      name,
+      email,
+      password: hashed,
+      location: {
+        type: "Point",
+        coordinates: [lng || 0, lat || 0] // Store as [lng, lat] in GeoJSON format
+      }
+    });
+
     await user.save();
 
     const token = jwt.sign({ id: user._id }, "secret_key");

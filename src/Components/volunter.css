@@ -49,7 +49,7 @@
   width: 100%;
 }
 
-/* Icons */
+/* Icon styling - consistent for all fields */
 .input-group i {
   position: absolute;
   top: 50%;
@@ -59,7 +59,56 @@
   font-size: 16px;
 }
 
-/* Input fields */
+/* Location field container */
+.input-group.location {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  padding-left: 42px; /* leave space for the icon */
+}
+
+.input-group.location i {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+}
+
+/* Location input */
+.input-group.location input {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  outline: none;
+}
+
+/* Get Current Location button */
+.input-group.location button {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border: none;
+  color: white;
+   
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.3s ease, transform 0.2s ease;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Hover effect */
+.input-group.location button:hover {
+  background: linear-gradient(135deg, #00ff88, #0072ff);
+  transform: scale(1.05);
+}
+
+/* Normal input fields */
 .input-group input {
   width: 100%;
   padding: 12px 14px 12px 42px;

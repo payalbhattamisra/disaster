@@ -3,7 +3,7 @@ const router = express.Router();
 const VictimRequest = require("../models/VictimRequest");
 const multer = require("multer");
 const path = require("path");
-
+const sendSMS = require("../sms_service");
 // Multer config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -42,6 +42,7 @@ router.post("/submit", upload.single("photo"), async (req, res) => {
 
     const photo = req.file ? req.file.filename : null;
 
+    // Save directly to VictimRequest
     const newVictimRequest = new VictimRequest({
       name,
       contact,
@@ -53,32 +54,33 @@ router.post("/submit", upload.single("photo"), async (req, res) => {
       photo,
     });
 
-    await newVictimRequest.save(); // Save to victimrequests
+    await newVictimRequest.save();
+    console.log("✅ Victim request saved");
 
-    // Parse lat/lng for map
-    const [lat, lng] = parseLatLng(location);
-    if (!lat || !lng) {
-      return res.status(400).json({ error: "Invalid location format" });
-    }
+ const [lat, lng] = parseLatLng(location);
 
-    // Save to requests collection
-    const newMapRequest = new Request({
-      type: typeOfHelp,
-      urgency,
-      address: location,
-      lat,
-      lng,
-      status: "Pending",
-    });
+const smsBody = `🚨 HELP REQUEST 🚨
+Name: ${name}
+Contact: ${contact}
+Location: Lat:${lat}, Lng:${lng}
+Type: ${typeOfHelp}
+Urgency: ${urgency}
+People: ${peopleCount}
+Description: ${description}`;
 
-    await newMapRequest.save(); // Save to requests collection
 
-    res.status(201).json({ message: "Request saved successfully." });
+    // Send SMS automatically via Twilio
+    await sendSMS(smsBody);
+
+    console.log("✅ SMS sent successfully");
+
+    res.status(201).json({ message: "Request saved and SMS sent successfully." });
   } catch (error) {
-    console.error("Error saving request:", error);
+    console.error("❌ Error saving request:", error);
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+
 // GET /api/victim/all
 router.get("/all", async (req, res) => {
   try {
