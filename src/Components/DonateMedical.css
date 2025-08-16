@@ -1,0 +1,79 @@
+.medical-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 40px 30px;
+  background: linear-gradient(145deg, #ffffff, #e6f2ff);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+.medical-container h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 28px;
+  color: #1a73e8;
+}
+
+.medical-container p {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 15px;
+  color: #555;
+}
+
+.medical-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medical-form label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.medical-form input,
+.medical-form textarea {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 12px;
+  background: #f0f8ff;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+  font-size: 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.medical-form input:focus,
+.medical-form textarea:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(26, 115, 232, 0.5);
+  background: #ffffff;
+}
+
+.medical-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.medical-form button {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 15px rgba(26, 115, 232, 0.3);
+}
+
+.medical-form button:hover {
+  background: #1664c1;
+  box-shadow: 0 10px 20px rgba(26, 115, 232, 0.4);
+}

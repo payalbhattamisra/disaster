@@ -1,0 +1,85 @@
+.donation-container {
+  padding: 30px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8fbff, #eef3f9);
+  height: 90vh; /* full viewport */
+  display: flex;
+  flex-direction: column;
+}
+
+.donation-header {
+  text-align: center;
+}
+
+.donation-header h1 {
+  font-size: 2.5rem;
+  color: #1d3557;
+}
+
+.donation-header p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+  margin: 10px auto 30px auto;
+}
+
+.donation-options {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  flex: 1; /* takes remaining space */
+  align-items: center; /* vertically center cards */
+  overflow: hidden; /* hide scroll */
+}
+
+.donation-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.donation-card:hover {
+  transform: translateY(-10px);
+}
+
+.donation-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 15px;
+}
+
+.donation-card h2 {
+  color: #457b9d;
+  margin-bottom: 10px;
+}
+
+.donation-card p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.donation-card button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  background: #1d3557;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.donation-card button:hover {
+  background: #457b9d;
+}
+
+.donation-footer {
+  text-align: center;
+  margin-top: 20px;
+}

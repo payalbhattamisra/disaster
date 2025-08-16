@@ -1,0 +1,74 @@
+.money-container {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, #ffffff, #fff5e6);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+.money-container h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 28px;
+  color: #f57c00;
+}
+
+.money-container p {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 15px;
+  color: #555;
+}
+
+.money-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.money-form label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.money-form input,
+.money-form select {
+  padding: 12px 15px;
+  border: none;
+  border-radius: 12px;
+  background: #fff7f0;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+  font-size: 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.money-form input:focus,
+.money-form select:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(245, 124, 0, 0.5);
+  background: #ffffff;
+}
+
+.money-form button {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #f57c00;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 15px rgba(245, 124, 0, 0.3);
+}
+
+.money-form button:hover {
+  background: #e67c00;
+  box-shadow: 0 10px 20px rgba(245, 124, 0, 0.4);
+}
