@@ -9,6 +9,8 @@ import NewsFeed from './Components/news.jsx';
 import "leaflet/dist/leaflet.css";
 import Ngo from './Components/ngo.jsx';
 import NgoDashboard from './Components/ngoDashboard.jsx';
+import Donation from "./Components/donation.jsx";
+import Community from './Components/community.jsx';
 function App() {
   return (
      <Router>
@@ -20,6 +22,8 @@ function App() {
             <Route path="/news"element={<NewsFeed/>}/>
             <Route path="/ngo"element={<Ngo/>}/>
             <Route path="/ngo-dashboard" element={<NgoDashboard/>}/>
+            <Route path="/donation" element={<Donation/>}/>
+            <Route path="/broadcasts" element={<Community/>}/>
         </Routes>
      </Router>
   );
