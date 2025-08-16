@@ -27,7 +27,12 @@ router.post("/signup", async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, "secret_key");
-    res.status(201).json({ token });
+    res.status(201).json({ 
+      _id: user._id,
+      token,
+      points: user.points
+    });
+
   } catch (err) {
     console.error("❌ Signup error:", err);
     res.status(500).json({ message: "Server error" });
@@ -46,13 +51,38 @@ router.post("/login", async (req, res) => {
     if (!match) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, "secret_key");
-    res.status(200).json({ token });
+    res.status(200).json({ 
+      _id: user._id,
+      token,
+      points: user.points
+    });
+
   } catch (err) {
     console.error("❌ Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
- 
+ // Update points
+router.patch("/:id/points", async (req, res) => {
+  try {
+    let { points } = req.body;
+    points = Number(points) || 0;
+
+    const volunteer = await Volunteer.findById(req.params.id);
+    if (!volunteer) return res.status(404).json({ message: "Volunteer not found" });
+
+    volunteer.points += points;
+    await volunteer.save();
+
+    res.json(volunteer); // send updated volunteer back
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
 
 module.exports = router;

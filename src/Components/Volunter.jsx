@@ -53,7 +53,14 @@ const Volunteer = () => {
     if (!res.ok) throw new Error(data.message || "Something went wrong");
 
     alert(`✅ ${isSignup ? "Signup" : "Login"} successful!`);
-    localStorage.setItem("volunteerToken", data.token);
+    // Store volunteer info after login/signup
+    // Make sure backend sends at least: _id, token, points
+    localStorage.setItem("volunteer", JSON.stringify({
+      _id: data._id,       // volunteer ID
+      token: data.token,   // JWT token
+      points: data.points || 0  // current points
+    }));
+
     window.location.href = "/volunteer-dashboard";
   } catch (err) {
     alert("❌ " + err.message);

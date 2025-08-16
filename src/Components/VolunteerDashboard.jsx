@@ -90,27 +90,50 @@ const VolunteerDashboard = () => {
 
     return result;
   };
-  const updateStatus = async (id, newStatus) => {
+ const volunteerData = localStorage.getItem("volunteer");
+const volunteer = volunteerData ? JSON.parse(volunteerData) : null;
+const volunteerId = volunteer?._id; // optional chaining prevents crash
+
+const updateStatus = async (id, newStatus) => {
   try {
+    // PATCH request to update victim request status
     const res = await fetch(`http://localhost:5000/api/victim/${id}/status`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus })
+      body: JSON.stringify({ 
+        status: newStatus,
+        volunteerId: volunteer._id  // send volunteer ID
+      }),
     });
+
     const updated = await res.json();
 
+    // Update frontend state
     setVictimRequests((prev) =>
       prev.map((req) => (req._id === id ? updated : req))
     );
 
     if (newStatus === "Completed") {
-       setPoints((prevPoints) => prevPoints + 10);
+      // Update points
+      const resPoints = await fetch(
+        `http://localhost:5000/api/volunteer/${volunteer._id}/points`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ points: 10 }),
+        }
+      );
+      const updatedVolunteer = await resPoints.json();
+      setPoints(updatedVolunteer.points);
+      localStorage.setItem("volunteer", JSON.stringify(updatedVolunteer));
+
       alert("✅ Request completed successfully!");
     }
   } catch (err) {
     console.error("Error updating status:", err);
   }
 };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,43 +186,40 @@ const VolunteerDashboard = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
           />
 
-          {victimRequests.map((req, index) => (
-            <Marker
-              key={index}
-              position={[req.latitude, req.longitude]}
-            >
-              <Popup>
-                <strong>Name:</strong> {req.name || "N/A"} <br />
-                <strong>Location:</strong> {req.location || "Unknown"} <br />
-                <strong>Details:</strong> {req.description || "N/A"} <br />
-                <strong>Contact:</strong> {req.contact || "N/A"} <br />
-                <strong>Help Needed:</strong> {req.typeOfHelp || "N/A"} <br />
-                <strong>Urgency:</strong> {req.urgency || "N/A"} <br />
-                <strong>People Count:</strong> {req.peopleCount || "N/A"}
-                <strong>Status:</strong> {req.status} <br /><br />
+         {victimRequests.map((req, index) =>
+  req.latitude != null && req.longitude != null ? (
+    <Marker key={index} position={[req.latitude, req.longitude]}>
+      <Popup>
+        <strong>Name:</strong> {req.name || "N/A"} <br />
+        <strong>Location:</strong> {req.location || "Unknown"} <br />
+        <strong>Details:</strong> {req.description || "N/A"} <br />
+        <strong>Contact:</strong> {req.contact || "N/A"} <br />
+        <strong>Help Needed:</strong> {req.typeOfHelp || "N/A"} <br />
+        <strong>Urgency:</strong> {req.urgency || "N/A"} <br />
+        <strong>People Count:</strong> {req.peopleCount || "N/A"} <br />
+        <strong>Status:</strong> {req.status} <br /><br />
 
-              {req.status === "Pending" && (
-                <button
-                  onClick={() => updateStatus(req._id, "In Progress")}
-                >
-                  Accept Request
-                </button>
-              )}
+        {req.status === "Pending" && (
+          <button onClick={() => updateStatus(req._id, "In Progress")}>
+            Accept Request
+          </button>
+        )}
 
-              {req.status === "In Progress" && (
-                <button
-                  onClick={() => updateStatus(req._id, "Completed")}
-                >
-                  Mark as Completed
-                </button>
-              )}
-              </Popup>
-            </Marker>
-          ))}
+        {req.status === "In Progress" && (
+          <button onClick={() => updateStatus(req._id, "Completed")}>
+            Mark as Completed
+          </button>
+        )}
+      </Popup>
+    </Marker>
+  ) : null
+)}
+
         </MapContainer>
       </div>
     </div>
   );
 };
+
 
 export default VolunteerDashboard;

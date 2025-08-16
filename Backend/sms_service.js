@@ -2,14 +2,15 @@
 require("dotenv").config();
 const twilio = require("twilio");
 
-const client = twilio('AC8e027780214146acfd44962d62536245', '9b23894772923108a1ca831fa1d8560f');
+const client = twilio(process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN);
 
 async function sendSMS(body) {
   try {
     const message = await client.messages.create({
       body,
-      from: '+17404402827', // Your Twilio number
-    to: '+918895905526'  // Recipient number (your phone)
+      from: process.env.TWILIO_FROM_NUMBER, // Your Twilio number
+    to:process.env.TO_NUMBER  // Recipient number (your phone)
     });
     console.log("✅ SMS sent:", message.sid);
   } catch (error) {

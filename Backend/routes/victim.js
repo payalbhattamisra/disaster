@@ -114,14 +114,19 @@ router.get("/all", async (req, res) => {
 // Update status
 router.patch("/:id/status", async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, volunteerId } = req.body; // <-- receive volunteer ID from frontend
     if (!["Pending", "In Progress", "Completed"].includes(status)) {
       return res.status(400).json({ error: "Invalid status value" });
     }
 
+    const updateData = { status };
+    if (status === "In Progress" || status === "Completed") {
+      updateData.assignedVolunteer = volunteerId; // assign volunteer
+    }
+
     const updated = await VictimRequest.findByIdAndUpdate(
       req.params.id,
-      { status },
+      updateData,
       { new: true }
     );
 
@@ -142,5 +147,6 @@ router.patch("/:id/status", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
