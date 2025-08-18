@@ -195,28 +195,28 @@ const CommunityPage = () => {
     
     if (itemsToShow.length === 0) {
       return (
-        <div className="no-results">
+        <div className="community-no-results">
           <p>No results found for "{searchTerm}"</p>
         </div>
       );
     }
 
     return (
-      <div className="text-content-grid">
+      <div className="community-text-content-grid">
         {itemsToShow.map((item, idx) => (
           <div 
             key={idx} 
-            className={`content-card ${getPriorityClass(item.priority)}`}
+            className={`community-content-card ${getPriorityClass(item.priority)}`}
           >
-            <div className="card-header">
-              <span className="category-tag">{item.category}</span>
+            <div className="community-card-header">
+              <span className="community-category-tag">{item.category}</span>
               {item.priority && (
-                <span className={`priority-badge ${item.priority}`}>
+                <span className={`community-priority-badge ${item.priority}`}>
                   {item.priority.toUpperCase()}
                 </span>
               )}
             </div>
-            <p className="card-content">{item.text}</p>
+            <p className="community-card-content">{item.text}</p>
           </div>
         ))}
       </div>
@@ -228,17 +228,17 @@ const CommunityPage = () => {
     
     if (itemsToShow.length === 0) {
       return (
-        <div className="no-results">
+        <div className="community-no-results">
           <p>No results found for "{searchTerm}"</p>
         </div>
       );
     }
 
     return (
-      <div className="video-content-grid">
+      <div className="community-video-content-grid">
         {itemsToShow.map((video, idx) => (
-          <div key={idx} className="video-card">
-            <div className="video-wrapper">
+          <div key={idx} className="community-video-card">
+            <div className="community-video-wrapper">
               <iframe
                 src={video.url}
                 title={video.title}
@@ -248,7 +248,7 @@ const CommunityPage = () => {
                 loading="lazy"
               ></iframe>
             </div>
-            <div className="video-info">
+            <div className="community-video-info">
               <h3>{video.title}</h3>
               <p>{video.description}</p>
             </div>
@@ -259,105 +259,107 @@ const CommunityPage = () => {
   };
 
   return (
-    <div className="community-container">
-      {/* Sidebar */}
-      <aside className="sidebar" role="navigation" aria-label="Resource categories">
-        <div className="sidebar-header">
-          <h2>Community Resources</h2>
-          <p className="sidebar-subtitle">Essential survival guides and tutorials</p>
-        </div>
-        <nav>
-          <ul role="menu">
-            {Object.keys(guides).map((item) => (
-              <li
-                key={item}
-                role="menuitem"
-                className={selected === item ? "active" : ""}
-                onClick={() => handleSidebarClick(item)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleSidebarClick(item);
-                  }
-                }}
-                tabIndex={0}
-                aria-selected={selected === item}
-              >
-                <span className="sidebar-icon">{guides[item].icon}</span>
-                <div className="sidebar-text">
-                  <span className="sidebar-title">{item}</span>
-                  <span className="sidebar-count">
-                    {guides[item].content.length} items
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-
-      {/* Content Area */}
-      <main className="content" role="main">
-        <header className="content-header">
-          <div className="title-section">
-            <h1>
-              <span className="title-icon">{guides[selected].icon}</span>
-              {selected}
-            </h1>
-            <p className="content-description">{guides[selected].description}</p>
+    <div className="community-page-wrapper">
+      <div className="community-container">
+        {/* Sidebar */}
+        <aside className="community-sidebar" role="navigation" aria-label="Resource categories">
+          <div className="community-sidebar-header">
+            <h2>Community Resources</h2>
+            <p className="community-sidebar-subtitle">Essential survival guides and tutorials</p>
           </div>
-          
-          {/* Search Bar */}
-          <div className="search-container">
-            <input
-              type="search"
-              placeholder={`Search in ${selected.toLowerCase()}...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-              aria-label={`Search within ${selected}`}
-            />
-            <div className="search-icon">🔍</div>
-          </div>
-        </header>
+          <nav>
+            <ul role="menu">
+              {Object.keys(guides).map((item) => (
+                <li
+                  key={item}
+                  role="menuitem"
+                  className={`community-sidebar-item ${selected === item ? "active" : ""}`}
+                  onClick={() => handleSidebarClick(item)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSidebarClick(item);
+                    }
+                  }}
+                  tabIndex={0}
+                  aria-selected={selected === item}
+                >
+                  <span className="community-sidebar-icon">{guides[item].icon}</span>
+                  <div className="community-sidebar-text">
+                    <span className="community-sidebar-title">{item}</span>
+                    <span className="community-sidebar-count">
+                      {guides[item].content.length} items
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-        <div className="content-box" role="region" aria-live="polite">
-          {isLoading ? (
-            <div className="loading-spinner">
-              <div className="spinner"></div>
-              <p>Searching...</p>
+        {/* Content Area */}
+        <main className="community-content" role="main">
+          <header className="community-content-header">
+            <div className="community-title-section">
+              <h1>
+                <span className="community-title-icon">{guides[selected].icon}</span>
+                {selected}
+              </h1>
+              <p className="community-content-description">{guides[selected].description}</p>
             </div>
-          ) : (
-            <>
-              {guides[selected].type === "video" 
-                ? renderVideoContent(guides[selected].content)
-                : renderTextContent(guides[selected].content)
-              }
-            </>
-          )}
-        </div>
+            
+            {/* Search Bar */}
+            <div className="community-search-container">
+              <input
+                type="search"
+                placeholder={`Search in ${selected.toLowerCase()}...`}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="community-search-input"
+                aria-label={`Search within ${selected}`}
+              />
+              <div className="community-search-icon">🔍</div>
+            </div>
+          </header>
 
-        {/* Stats Footer */}
-        <footer className="content-footer">
-          <div className="stats">
-            <span>
-              Showing {filteredContent ? filteredContent.length : guides[selected].content.length} of {guides[selected].content.length} items
-            </span>
-            {searchTerm && (
-              <button 
-                onClick={() => {
-                  setSearchTerm("");
-                  setFilteredContent(null);
-                }}
-                className="clear-search"
-                aria-label="Clear search"
-              >
-                Clear search ✕
-              </button>
+          <div className="community-content-box" role="region" aria-live="polite">
+            {isLoading ? (
+              <div className="community-loading-spinner">
+                <div className="community-spinner"></div>
+                <p>Searching...</p>
+              </div>
+            ) : (
+              <>
+                {guides[selected].type === "video" 
+                  ? renderVideoContent(guides[selected].content)
+                  : renderTextContent(guides[selected].content)
+                }
+              </>
             )}
           </div>
-        </footer>
-      </main>
+
+          {/* Stats Footer */}
+          <footer className="community-content-footer">
+            <div className="community-stats">
+              <span>
+                Showing {filteredContent ? filteredContent.length : guides[selected].content.length} of {guides[selected].content.length} items
+              </span>
+              {searchTerm && (
+                <button 
+                  onClick={() => {
+                    setSearchTerm("");
+                    setFilteredContent(null);
+                  }}
+                  className="community-clear-search"
+                  aria-label="Clear search"
+                >
+                  Clear search ✕
+                </button>
+              )}
+            </div>
+          </footer>
+        </main>
+      </div>
     </div>
   );
 };
