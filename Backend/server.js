@@ -28,6 +28,9 @@ app.use("/api/ngo",ngoRoutes);
 // Connect to MongoDB
 require('dotenv').config({ path: __dirname + '/.env' }); // Force load from backend
 
+require("dotenv").config();
+console.log("Twilio SID:", process.env.TWILIO_ACCOUNT_SID ? "Loaded ✅" : "Missing ❌");
+
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
