@@ -125,7 +125,6 @@
 }
 
 
-/* Graphs & Heatmaps Section */
 .graphs-maps {
   background-color: #f9f9f9;
   padding: 20px;
@@ -139,35 +138,18 @@
   color: #333;
 }
 
-.graphs-maps .placeholder {
-  height: 300px;
-  background-color: #eaeaea;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  border: 1px dashed #ccc;
-  text-align: center;
-}
-
-/* Chart Containers */
-.graphs-maps canvas {
-  max-width: 100%;
-  border-radius: 8px;
+.bar-chart-container, .map-container {
+  margin: 15px 0;
+  padding: 15px;
   background-color: #fff;
-  padding: 10px;
+  border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-/* Optional: Responsive */
-@media (max-width: 768px) {
-  .graphs-maps .placeholder {
-    height: 200px;
-    font-size: 1rem;
-  }
+.map-container {
+  height: 300px;
 }
+
 
 .alerts button {
   margin-right: 10px;
@@ -190,4 +172,18 @@
 .pie-chart-container {
   max-width: 400px;
   margin: 0 auto;
+}
+.bar-chart-container {
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  max-width: 500px; /* max width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bar-chart-container canvas {
+  max-height: 250px; /* limit chart height */
 }

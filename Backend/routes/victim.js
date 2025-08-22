@@ -87,22 +87,27 @@ router.get("/all", async (req, res) => {
     const victims = await VictimRequest.find();
 
     // Convert "Lat:xx,Lng:yy" string into latitude & longitude fields
-    const formatted = victims.map(v => {
-      let latitude = null;
-      let longitude = null;
-      if (v.location) {
-        const match = v.location.match(/Lat:([\d.-]+),Lng:([\d.-]+)/);
-        if (match) {
-          latitude = parseFloat(match[1]);
-          longitude = parseFloat(match[2]);
-        }
-      }
-      return {
-        ...v._doc,
-        latitude,
-        longitude
-      };
-    });
+ const formatted = victims.map(v => {
+  let latitude = null;
+  let longitude = null;
+  if (v.location && v.location.includes("Lat") && v.location.includes("Lng")) {
+    try {
+      const parts = v.location.split(",");
+      latitude = parseFloat(parts[0].split(":")[1].trim());
+      longitude = parseFloat(parts[1].split(":")[1].trim());
+    } catch (err) {
+      latitude = null;
+      longitude = null;
+    }
+  }
+  return {
+    ...v._doc,
+    latitude,
+    longitude
+  };
+});
+
+
 
     res.json(formatted);
   } catch (err) {
