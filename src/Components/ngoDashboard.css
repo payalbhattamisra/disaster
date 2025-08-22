@@ -66,3 +66,12 @@
 .alerts button:hover {
   background-color: #2980b9;
 }
+.pie-chart-section {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.pie-chart-container {
+  max-width: 400px;
+  margin: 0 auto;
+}

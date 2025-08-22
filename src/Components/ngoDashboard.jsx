@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
 import './ngoDashboard.css';
 
 function NgoDashboard() {
@@ -12,7 +14,7 @@ function NgoDashboard() {
   const [lowStock, setLowStock] = useState([]);
 
   useEffect(() => {
-    // Fetch victim request status counts
+    // Fetch victim stats
     const fetchVictimStats = async () => {
       try {
         const res = await fetch('http://localhost:5000/api/victim/all');
@@ -35,8 +37,7 @@ function NgoDashboard() {
     // Fetch volunteer activity
     const fetchVolunteerActivity = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/volunteer/activity'); 
-        // Replace with your actual volunteer API endpoint
+        const res = await fetch('http://localhost:5000/api/ngo/activity'); 
         const data = await res.json();
         setVolunteerActivity(data);
       } catch (err) {
@@ -44,14 +45,13 @@ function NgoDashboard() {
       }
     };
 
-    // Fetch inventory (optional: from backend)
+    // Fetch inventory
     const fetchInventory = async () => {
       try {
         const res = await fetch('http://localhost:5000/api/inventory'); 
-        // Replace with your actual inventory API endpoint
         const data = await res.json();
         setInventory(data);
-        setLowStock(data.filter(item => item.qty < 10)); // Example threshold
+        setLowStock(data.filter(item => item.qty < 10));
       } catch (err) {
         console.error("Error fetching inventory:", err);
       }
@@ -66,6 +66,17 @@ function NgoDashboard() {
     alert(`Mass ${type} alert sent!`);
   };
 
+  // Pie chart data
+  const pieData = {
+    labels: ['Pending', 'In Progress', 'Resolved'],
+    datasets: [
+      {
+        data: [stats.pending, stats.inProgress, stats.resolved],
+        backgroundColor: ['#f39c12', '#2980b9', '#27ae60']
+      }
+    ]
+  };
+
   return (
     <div className="ngo-dashboard">
       <h1>NGO Dashboard</h1>
@@ -76,6 +87,14 @@ function NgoDashboard() {
         <div className="card in-progress">In Progress: {stats.inProgress}</div>
         <div className="card resolved">Resolved: {stats.resolved}</div>
       </div>
+
+      {/* Pie Chart */}
+      <section className="pie-chart-section">
+        <h2>Requests Breakdown</h2>
+        <div className="pie-chart-container">
+          <Pie data={pieData} />
+        </div>
+      </section>
 
       {/* Volunteer Activity */}
       <section className="volunteer-section">
@@ -92,14 +111,14 @@ function NgoDashboard() {
             {volunteerActivity.length > 0 ? (
               volunteerActivity.map((v, idx) => (
                 <tr key={idx}>
-                  <td>{v.name}</td>
-                  <td>{v.task}</td>
+                  <td>{v.name || "Unassigned"}</td>
+                  <td>{v.task || "-"}</td>
                   <td>{v.status}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="3">No active volunteer data.</td>
+                <td colSpan="3">No volunteer activity yet.</td>
               </tr>
             )}
           </tbody>
@@ -110,11 +129,15 @@ function NgoDashboard() {
       <section className="inventory-section">
         <h2>Inventory of Resources</h2>
         <ul>
-          {inventory.map((item, idx) => (
-            <li key={idx}>
-              {item.item}: {item.qty}
-            </li>
-          ))}
+          {inventory.length > 0 ? (
+            inventory.map((item, idx) => (
+              <li key={idx}>
+                {item.item}: {item.qty}
+              </li>
+            ))
+          ) : (
+            <li>No inventory data.</li>
+          )}
         </ul>
       </section>
 

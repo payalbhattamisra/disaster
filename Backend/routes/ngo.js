@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const NGO = require("../models/Ngo");
 
 const router = express.Router();
-
+const VictimRequest = require("../models/VictimRequest");
+const Volunteer = require("../models/Volunteer");
 // Register NGO
 router.post("/register", async (req, res) => {
   try {
@@ -38,5 +39,24 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+// GET /api/volunteer/activity
+router.get("/activity", async (req, res) => {
+  try {
+    const requests = await VictimRequest.find().populate("assignedVolunteer", "name");
+
+    const activity = requests.map(r => ({
+      name: r.assignedVolunteer ? r.assignedVolunteer.name : "Unassigned",
+      task: r.typeOfHelp,
+      status: r.status
+    }));
+
+    res.json(activity);
+  } catch (err) {
+    console.error("Error fetching volunteer activity:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 module.exports = router;
