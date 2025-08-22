@@ -25,6 +25,9 @@ app.use("/api/volunteer", volunteerRoutes);
 const ngoRoutes=require("./routes/ngo");
 app.use("/api/ngo",ngoRoutes);
 
+const inventoryRoutes = require('./routes/inventory');
+app.use('/api/inventory', inventoryRoutes);
+
 // Connect to MongoDB
 require('dotenv').config({ path: __dirname + '/.env' }); // Force load from backend
 

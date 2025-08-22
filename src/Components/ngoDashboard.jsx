@@ -126,20 +126,49 @@ function NgoDashboard() {
       </section>
 
       {/* Inventory */}
-      <section className="inventory-section">
-        <h2>Inventory of Resources</h2>
-        <ul>
-          {inventory.length > 0 ? (
-            inventory.map((item, idx) => (
-              <li key={idx}>
-                {item.item}: {item.qty}
-              </li>
-            ))
-          ) : (
-            <li>No inventory data.</li>
-          )}
-        </ul>
-      </section>
+  <section className="inventory-section">
+    <h2>Inventory of Resources</h2>
+    
+    <ul>
+      {inventory.length > 0 ? (
+        inventory.map((item, idx) => (
+          <li key={idx}>
+            {item.item}: {item.qty}
+          </li>
+        ))
+      ) : (
+        <li>No inventory data.</li>
+      )}
+    </ul>
+
+    {/* Add New Inventory Item */}
+    <h3>Add New Item</h3>
+    <form onSubmit={async (e) => {
+      e.preventDefault();
+      const itemName = e.target.item.value;
+      const itemQty = parseInt(e.target.qty.value);
+
+      if(!itemName || isNaN(itemQty)) return alert("Enter valid data");
+
+      try {
+        const res = await fetch('http://localhost:5000/api/inventory/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ item: itemName, qty: itemQty })
+        });
+        const newItem = await res.json();
+        setInventory(prev => [...prev, newItem]);
+        e.target.reset();
+      } catch (err) {
+        console.error("Error adding inventory:", err);
+      }
+    }}>
+      <input type="text" name="item" placeholder="Item Name" required />
+      <input type="number" name="qty" placeholder="Quantity" required />
+      <button type="submit">Add Item</button>
+    </form>
+  </section>
+
 
       {/* Low Stock Warnings */}
       {lowStock.length > 0 && (

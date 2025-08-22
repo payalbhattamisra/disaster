@@ -32,25 +32,141 @@
   padding: 8px;
 }
 
-.inventory-section ul, .low-stock ul {
+/* Inventory Section */
+.inventory-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 25px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.inventory-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.inventory-section ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.inventory-section ul li {
+  padding: 8px 12px;
+  background-color: #fff;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-weight: 500;
+}
+
+.inventory-section h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+/* Add Inventory Form */
+.inventory-section form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inventory-section form input[type="text"],
+.inventory-section form input[type="number"] {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1 1 150px;
+}
+
+.inventory-section form button {
+  padding: 8px 16px;
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.inventory-section form button:hover {
+  background-color: #1c5980;
+}
+
+/* Low Stock Warnings */
+.low-stock {
+  background-color: #fff3f3;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 1px solid #f1c0c0;
+}
+
+.low-stock h2 {
+  color: #c0392b;
+  margin-bottom: 10px;
+}
+
+.low-stock ul {
   list-style: none;
   padding: 0;
 }
 
-.low-stock {
-  background-color: #ffefef;
-  border: 1px solid #e74c3c;
-  padding: 10px;
-  margin: 15px 0;
+.low-stock ul li {
+  padding: 6px 10px;
+  background-color: #ffe6e6;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+
+/* Graphs & Heatmaps Section */
+.graphs-maps {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 25px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.graphs-maps h2 {
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .graphs-maps .placeholder {
-  background-color: #f4f4f4;
-  height: 200px;
+  height: 300px;
+  background-color: #eaeaea;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #777;
+  color: #999;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+  text-align: center;
+}
+
+/* Chart Containers */
+.graphs-maps canvas {
+  max-width: 100%;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Optional: Responsive */
+@media (max-width: 768px) {
+  .graphs-maps .placeholder {
+    height: 200px;
+    font-size: 1rem;
+  }
 }
 
 .alerts button {
