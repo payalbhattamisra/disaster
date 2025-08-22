@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./DonateGoods.css";
 
 function DonateGoods() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    details: "",
+  });
+
+  const firstInputRef = useRef(null);
 
   const items = [
     { name: "Clothes", desc: "Donate warm clothes, shoes, and blankets." },
@@ -21,13 +29,35 @@ function DonateGoods() {
 
   const closeModal = () => {
     setModalOpen(false);
+    setFormData({ name: "", email: "", phone: "", details: "" });
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Thank you for donating ${selectedItem}!`);
-    setModalOpen(false);
+    alert(`Thank you for donating ${selectedItem}, ${formData.name}!`);
+    closeModal();
   };
+
+  // Focus first input on modal open
+  useEffect(() => {
+    if (modalOpen && firstInputRef.current) {
+      firstInputRef.current.focus();
+      document.body.style.overflow = "hidden"; // prevent background scroll
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [modalOpen]);
+
+  // Close modal on Esc key
+  useEffect(() => {
+    const handleEsc = (e) => e.key === "Escape" && closeModal();
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   return (
     <div className="donate-goods-container">
@@ -39,22 +69,81 @@ function DonateGoods() {
           <div className="goods-card" key={index}>
             <h2>{item.name}</h2>
             <p>{item.desc}</p>
-            <button onClick={() => openModal(item.name)}>Donate {item.name}</button>
+            <button onClick={() => openModal(item.name)}>
+              Donate {item.name}
+            </button>
           </div>
         ))}
       </div>
 
-      {/* Modal */}
       {modalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="modal-overlay"
+          onClick={closeModal}
+          aria-modal="true"
+          role="dialog"
+        >
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2>Donate {selectedItem}</h2>
             <form onSubmit={handleSubmit}>
-              <input type="text" placeholder="Your Name" required />
-              <input type="email" placeholder="Email" required />
-              <input type="tel" placeholder="Phone Number" required />
-              <textarea placeholder="Additional Details / Quantity" required />
-              <button type="submit">Submit Donation</button>
+              <label>
+                Name
+                <input
+                  type="text"
+                  name="name"
+                  ref={firstInputRef}
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Phone Number
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Additional Details / Quantity
+                <textarea
+                  name="details"
+                  value={formData.details}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <button
+                type="submit"
+                disabled={
+                  !formData.name ||
+                  !formData.email ||
+                  !formData.phone ||
+                  !formData.details
+                }
+              >
+                Submit Donation
+              </button>
             </form>
             <button className="close-btn" onClick={closeModal}>
               &times;

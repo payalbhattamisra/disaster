@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { QRCodeCanvas } from "qrcode.react"; // npm install qrcode.react
 import "./DonateMoney.css";
 
 function DonateMoney() {
@@ -10,20 +11,91 @@ function DonateMoney() {
     paymentMethod: "UPI",
   });
 
+  const [upiUrl, setUpiUrl] = useState("");
+
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // Dynamically load Razorpay script
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Thank you ${formData.name} for donating ₹${formData.amount} via ${formData.paymentMethod}!`);
-    setFormData({ name: "", email: "", phone: "", amount: "", paymentMethod: "UPI" });
+
+    if (!formData.amount || formData.amount <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
+
+    if (formData.paymentMethod === "UPI") {
+      // UPI payment
+      const upiId = "8895905526@ibl"; // your real UPI ID
+      const url = `upi://pay?pa=${upiId}&pn=Payal%20Bhattamisra&am=${formData.amount}&cu=INR`;
+
+      setUpiUrl(url); // show QR code
+      window.location.href = url; // redirect to UPI app
+    } else {
+      // Razorpay payment
+      const loaded = await loadRazorpayScript();
+      if (!loaded) {
+        alert("Razorpay SDK failed to load. Please check your internet.");
+        return;
+      }
+
+     const options = {
+  key: "rzp_test_R8O2jH5fFOOzx0",
+  amount: formData.amount * 100,
+  currency: "INR",
+  name: "Disaster Relief Fund",
+  description: `Donation by ${formData.name}`,
+  handler: function (response) {
+    alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+  },
+  prefill: {
+    name: formData.name,
+    email: formData.email,
+    contact: formData.phone,
+    // Prefill test card
+    card: {
+      number: "4111111111111111",
+      expiry: "09/25",
+      cvv: "123",
+    },
+  },
+  theme: { color: "#3399cc" },
+};
+
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    }
+
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      amount: "",
+      paymentMethod: "UPI",
+    });
   };
 
   return (
     <div className="money-container">
       <h1>Donate Money</h1>
-      <p>Support disaster relief by contributing securely via UPI, Net Banking, or Card.</p>
+      <p>
+        Support disaster relief by contributing securely via UPI, Net Banking,
+        or Card.
+      </p>
 
       <form className="money-form" onSubmit={handleSubmit}>
         <div>
@@ -71,6 +143,7 @@ function DonateMoney() {
             onChange={handleChange}
             placeholder="Enter donation amount"
             required
+            min="1"
           />
         </div>
 
@@ -89,6 +162,13 @@ function DonateMoney() {
 
         <button type="submit">Submit Donation</button>
       </form>
+
+      {formData.paymentMethod === "UPI" && upiUrl && (
+        <div className="upi-section">
+          <h3>Or scan this QR to pay:</h3>
+          <QRCodeCanvas value={upiUrl} size={200} />
+        </div>
+      )}
     </div>
   );
 }

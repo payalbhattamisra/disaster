@@ -102,47 +102,58 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.modal-content h2 {
-  margin-bottom: 20px;
-  color: #333;
-  text-align: center;
-}
-
+/* Modal form styling */
 .modal-content form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px; /* slightly larger spacing for clarity */
 }
 
+/* Inputs and textarea */
 .modal-content input,
 .modal-content textarea {
-  padding: 12px 15px;
-  border-radius: 8px;
+  padding: 14px 16px;
+  border-radius: 10px; /* smoother corners */
   border: 1px solid #ccc;
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Textarea */
 .modal-content textarea {
-  min-height: 90px;
-  resize: none;
+  min-height: 100px;
+  resize: vertical;
 }
 
+/* Focus state for inputs and textarea */
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 6px rgba(255, 107, 107, 0.3);
+  outline: none;
+}
+
+/* Submit button */
 .modal-content button[type="submit"] {
-  background: #ff6b6b;
+  background: linear-gradient(90deg, #ff6b6b, #ff4c4c);
   border: none;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 14px 0;
+  border-radius: 10px;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Submit button hover effect */
 .modal-content button[type="submit"]:hover {
-  background: #ff4c4c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
+
 
 .close-btn {
   position: absolute;
