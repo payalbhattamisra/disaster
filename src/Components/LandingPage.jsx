@@ -201,6 +201,69 @@ const LandingPage = () => {
           ))}
         </div>
 
+{/* Statistics / Impact Section */}
+        <section className="impact-section">
+        <h2>Our Impact</h2>
+        <div className="impact-cards">
+          <div className="impact-card">
+            <h3>100+</h3>
+            <p>Victims Supported</p>
+          </div>
+          <div className="impact-card">
+            <h3>50+</h3>
+            <p>Volunteers Registered</p>
+          </div>
+          <div className="impact-card">
+            <h3>20+</h3>
+            <p>NGOs Partnered</p>
+          </div>
+          <div className="impact-card">
+            <h3>50+</h3>
+            <p>Rescue Operations</p>
+          </div>
+        </div>
+      </section>
+
+
+               {/* About section */}
+        <section className="about-section" id="about">
+          <h2>About Sarathi</h2>
+          <p>
+            Sarathi is a disaster management platform built to empower communities during crises. 
+            By connecting victims, volunteers, NGOs, and authorities, we ensure timely support, 
+            efficient coordination, and transparent resource usage. Our mission is to save lives, 
+            reduce suffering, and build resilient communities with the help of technology.
+          </p>
+        </section>
+
+        <section className="testimonial-section">
+          <h2>What People Say</h2>
+          <div className="testimonials">
+            <div className="testimonial-card">
+              <p>"Sarathi helped us get medical support within hours after the floods. Truly a lifesaver!"</p>
+              <span>- Riya, Victim</span>
+            </div>
+            <div className="testimonial-card">
+              <p>"As a volunteer, I could easily find nearby locations where help was needed most."</p>
+              <span>- Aarav, Volunteer</span>
+            </div>
+            <div className="testimonial-card">
+              <p>"The NGO dashboard made coordination seamless. Tracking resources became so much easier."</p>
+              <span>- Meera, NGO Coordinator</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="newsletter-section" id="contact">
+  <h2>Stay Updated</h2>
+  <p>Subscribe to get the latest news, alerts, and community updates from Sarathi.</p>
+  <form className="newsletter-form">
+    <input type="email" placeholder="Enter your email" required />
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+
         <footer className="footer">
           <div className="footer-content">
             <div className="footer-section brand">

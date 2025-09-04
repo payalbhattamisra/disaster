@@ -383,3 +383,155 @@ max-height: 500px; /* Enough to handle most content */
   }
 }
 
+/* About Section */
+.about-section {
+  background: linear-gradient(135deg, #f0f4f8, #ffffff);
+  text-align: center;
+}
+
+.about-section h2 {
+  font-size: 32px;
+  font-family: "cursive";
+  color: #3B444B;
+  margin-bottom: 20px;
+}
+
+.about-section p {
+  max-width: 750px;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #004a7c
+}
+
+/* Testimonials Section */
+.testimonial-section {
+  padding: 70px 20px;
+  background: #fafafa;
+  text-align: center;
+}
+
+.testimonial-section h2 {
+  font-size: 32px;
+  font-family: "cursive";
+  color: #3B444B;
+  margin-bottom: 40px;
+}
+
+.testimonials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.testimonial-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 25px 20px;
+  width: 300px;
+  min-height: 180px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.testimonial-card p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #004a7c;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.testimonial-card span {
+  font-weight: bold;
+  color: #3B444B;
+  font-size: 14px;
+}
+
+.impact-section {
+  padding: 60px 20px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.impact-section h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #3B444B;
+  font-family: cursive;
+}
+
+.impact-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.impact-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 200px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.impact-card:hover {
+  transform: translateY(-5px);
+}
+
+.impact-card h3 {
+  font-size: 28px;
+  color: #4facfe;
+  margin-bottom: 10px;
+}
+
+.impact-card p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Newsletter Signup Section */
+.newsletter-section {
+  padding: 60px 20px;
+  background: #6ba2cc;
+  color: white;
+  text-align: center;
+}
+
+.newsletter-section h2 {
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+.newsletter-form {
+  margin-top: 20px;
+}
+
+.newsletter-form input {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  width: 250px;
+  margin-right: 10px;
+}
+
+.newsletter-form button {
+  padding: 12px 20px;
+  background: #4facfe;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.newsletter-form button:hover {
+  background: #00f2fe;
+}
