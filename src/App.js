@@ -14,6 +14,8 @@ import Community from './Components/community.jsx';
 import DonateMoney from './Components/DonateMoney.jsx';
 import DonateGoods from './Components/DonateGoods.jsx';
 import DonateMedical from './Components/DonateMedical.jsx';
+import Schemes from './Components/schemes.jsx';
+import Lost from './Components/Lost.jsx';
 function App() {
   return (
      <Router>
@@ -30,6 +32,8 @@ function App() {
             <Route path="/donate-money" element={<DonateMoney />} />
             <Route path="/donate-goods" element={<DonateGoods />} />
             <Route path="/donate-medical" element={<DonateMedical />} />
+            <Route path="/schemes" element={<Schemes/>}/> 
+            <Route path="/lostfound" element={<Lost/>}/> 
         </Routes>
      </Router>
   );

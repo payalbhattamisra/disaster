@@ -46,7 +46,7 @@ const Ngo = () => {
     <div
       className="volunteer-auth-wrapper"
       style={{
-        minHeight: "94.3vh",
+        minHeight: "99.9vh",
         background: "linear-gradient(135deg, #2a2a72, #009ffd)",
         display: "flex",
         justifyContent: "center",

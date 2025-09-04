@@ -45,6 +45,20 @@ const cardData = [
     details: ['Short Guides & Videos', 'Water Purification Tips', 'First Aid Tutorials', 'Safety Awareness', 'Offline Access'],
     buttonText: 'Watch Guides',
   },
+  {
+    hue: 60,
+    title: 'Government Schemes',
+    image: './images/govt_schemes.jpg',
+    details: ['Relief Fund Access', 'Subsidy Information', 'Insurance Claims', 'Compensation Guidelines', 'Emergency Policies'],
+    buttonText: 'Explore Schemes',
+  },
+  {
+    hue: 340,
+    title: 'Lost & Found',
+    image: './images/lost_&_found.webp',
+    details: ['Report Missing Person', 'Search & Match Reports', 'Upload Photos / Info', 'Verified NGO/Police Help', 'Family Reunification'],
+    buttonText: 'Search or Report',
+  },
 ];
 
 const faqs = [
@@ -94,6 +108,10 @@ const LandingPage = () => {
       navigate('/donation');
     } else if (title === 'Community Broadcasts') {
       navigate('/broadcasts');
+    } else if (title === 'Government Schemes') {
+      navigate('/schemes');
+    } else if (title === 'Lost & Found') {
+      navigate('/lostfound');
     }
   };
 
