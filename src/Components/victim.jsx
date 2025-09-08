@@ -52,7 +52,7 @@ const Victim = () => {
     }
   }
 
-  fetch("http://localhost:5000/api/victim/submit", {
+  fetch("https://disaster-coral.vercel.app/api/victim/submit", {
     method: "POST",
     body: formData,
   })
