@@ -8,8 +8,17 @@ dotenv.config();
 const app=express();
 const PORT=process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://disaster-payal-bhattamisras-projects.vercel.app"
+];
+
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use("/uploads", express.static("uploads")); // static file serve
@@ -31,12 +40,12 @@ app.use('/api/inventory', inventoryRoutes);
 app.get("/api/news", async (req, res) => {
   try {
     const query = req.query.q || "earthquake OR flood OR wildfire";
-    const response = await fetch(
-      `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&sortBy=publishedAt&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
-    );
+    const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&sortBy=publishedAt&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
+
+    const response = await fetch(url);
     const data = await response.json();
     res.json(data);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: "Failed to fetch news" });
   }
 });
