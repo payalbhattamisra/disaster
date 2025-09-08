@@ -62,13 +62,14 @@ const Victim = () => {
     method: "POST",
     body: formData,
   })
-    .then((res) => {
-      if (!res.ok) {
-        // If server returned error, throw it to catch block
-        throw new Error(`Server responded with status ${res.status}`);
-      }
-      return res.json();
-    })
+    .then(async (res) => {
+    if (!res.ok) throw new Error(`Server responded with status ${res.status}`);
+    // Safely parse JSON only if response has content
+    const text = await res.text();
+    let data = {};
+    try { data = text ? JSON.parse(text) : {}; } catch (err) {}
+    return data;
+  })
     .then((data) => {
       alert("✅ Submitted successfully! SMS sent automatically.");
       console.log("Response:", data);
