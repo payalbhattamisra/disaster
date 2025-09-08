@@ -2,7 +2,7 @@
   padding: 30px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #f8fbff, #eef3f9);
-  height: 90vh; /* full viewport */
+  height: 99vh; /* full viewport */
   display: flex;
   flex-direction: column;
 }
