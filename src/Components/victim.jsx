@@ -43,6 +43,7 @@ const Victim = () => {
  const handleSubmit = (e) => {
   e.preventDefault();
 
+  // Determine API URL based on environment
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5000/api/victim/submit"
@@ -61,19 +62,12 @@ const Victim = () => {
     method: "POST",
     body: formData,
   })
-    .then(async (res) => {
-      // Check if status is OK (2xx)
-      if (!res.ok) throw new Error(`Server responded with status ${res.status}`);
-
-      // Safely parse JSON if response has content
-      const text = await res.text();
-      let data = {};
-      try {
-        data = text ? JSON.parse(text) : {};
-      } catch (err) {
-        console.warn("Response is not JSON, skipping parse");
+    .then((res) => {
+      if (!res.ok) {
+        // If server returned error, throw it to catch block
+        throw new Error(`Server responded with status ${res.status}`);
       }
-      return data;
+      return res.json();
     })
     .then((data) => {
       alert("✅ Submitted successfully! SMS sent automatically.");
@@ -93,10 +87,9 @@ const Victim = () => {
     })
     .catch((err) => {
       console.error("❌ Error submitting:", err);
-      alert("✅ Submitted successfully! (Warning: check console for response parsing)");
+      alert("❌ Error submitting the form. Check console for details.");
     });
 };
-
 
   
 
