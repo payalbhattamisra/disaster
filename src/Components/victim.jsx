@@ -43,6 +43,12 @@ const Victim = () => {
  const handleSubmit = (e) => {
   e.preventDefault();
 
+  // Determine API URL based on environment
+  const API_URL =
+    window.location.hostname === "localhost"
+      ? "http://localhost:5000/api/victim/submit"
+      : "https://disaster-coral.vercel.app/api/victim/submit";
+
   const formData = new FormData();
   for (let key in form) {
     if (key === "photo" && form.photo) {
@@ -52,11 +58,17 @@ const Victim = () => {
     }
   }
 
-  fetch("https://disaster-coral.vercel.app/api/victim/submit", {
+  fetch(API_URL, {
     method: "POST",
     body: formData,
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        // If server returned error, throw it to catch block
+        throw new Error(`Server responded with status ${res.status}`);
+      }
+      return res.json();
+    })
     .then((data) => {
       alert("✅ Submitted successfully! SMS sent automatically.");
       console.log("Response:", data);
@@ -75,10 +87,9 @@ const Victim = () => {
     })
     .catch((err) => {
       console.error("❌ Error submitting:", err);
-      alert("Error submitting the form.");
+      alert("❌ Error submitting the form. Check console for details.");
     });
 };
-
 
   
 
