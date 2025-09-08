@@ -28,6 +28,18 @@ app.use("/api/ngo",ngoRoutes);
 const inventoryRoutes = require('./routes/inventory');
 app.use('/api/inventory', inventoryRoutes);
 
+app.get("/api/news", async (req, res) => {
+  try {
+    const query = req.query.q || "earthquake OR flood OR wildfire";
+    const response = await fetch(
+      `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&sortBy=publishedAt&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch news" });
+  }
+});
 // Connect to MongoDB
 require('dotenv').config({ path: __dirname + '/.env' }); // Force load from backend
 

@@ -41,27 +41,29 @@ const NewsFeed = () => {
   }, []);
 
   // Fetch news articles 
-   const fetchDisasterNews = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const query = `earthquake OR flood OR wildfire ${userState ? "OR " + userState : ""}`;
-      const response = await fetch(
-        `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&sortBy=publishedAt&language=en&apiKey=c40922dda8f641d78e092c1063a5a089
-`
-      );
-      const data = await response.json();
-      if (data.status === "ok") {
-        setArticles(data.articles);
-      } else {
-        throw new Error(data.message || "Failed to load news");
-      }
-    } catch (error) {
-      setError(error.message || "Error fetching news");
-    } finally {
-      setLoading(false);
+ const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
+const fetchDisasterNews = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    const query = `earthquake OR flood OR wildfire ${userState ? "OR " + userState : ""}`;
+    const response = await fetch(`${API_BASE}/api/news?q=${encodeURIComponent(query)}`);
+
+    if (!response.ok) throw new Error("Server error, try again");
+    const data = await response.json();
+
+    if (data.status === "ok") {
+      setArticles(data.articles);
+    } else {
+      throw new Error(data.message || "Failed to load news");
     }
-  };
+  } catch (error) {
+    setError(error.message || "Error fetching news");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     console.log("news api",NEWS_API_KEY);
