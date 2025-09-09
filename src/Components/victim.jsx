@@ -44,10 +44,10 @@ const Victim = () => {
   e.preventDefault();
 
   // Determine API URL based on environment
-  const API_URL = process.env.REACT_APP_API_URL || 
-    (window.location.hostname === "localhost"
-      ? "http://localhost:5000/api/victim/submit"
-      : "https://disaster-coral.vercel.app/api/victim/submit");
+ const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/victim/submit"
+    : "https://your-backend.onrender.com/api/victim/submit";
 
   const formData = new FormData();
   for (let key in form) {
