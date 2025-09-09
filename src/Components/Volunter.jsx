@@ -39,8 +39,8 @@ const Volunteer = () => {
   };
 
   const url = isSignup
-    ? "http://localhost:5000/api/volunteer/signup"
-    : "http://localhost:5000/api/volunteer/login";
+    ? "http://disaster-3hvn.onrender.com/api/volunteer/signup"
+    : "http://disaster-3hvn.onrender.com/api/volunteer/login";
 
   try {
     const res = await fetch(url, {

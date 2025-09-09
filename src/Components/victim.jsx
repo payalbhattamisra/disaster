@@ -47,7 +47,7 @@ const Victim = () => {
  const API_URL =
   window.location.hostname === "localhost"
     ? "http://localhost:5000/api/victim/submit"
-    : "https://your-backend.onrender.com/api/victim/submit";
+    : "https://disaster-3hvn.onrender.com/api/victim/submit";
 
   const formData = new FormData();
   for (let key in form) {

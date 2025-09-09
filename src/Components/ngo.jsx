@@ -21,8 +21,8 @@ const Ngo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isSignup
-      ? "http://localhost:5000/api/ngo/register" // ✅ matches backend
-      : "http://localhost:5000/api/ngo/login";
+      ? "http://disaster-3hvn.onrender.com/api/ngo/register" // ✅ matches backend
+      : "http://disaster-3hvn.onrender.com/api/ngo/login";
 
     try {
       const res = await fetch(url, {
