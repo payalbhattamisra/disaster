@@ -41,7 +41,9 @@ const NewsFeed = () => {
   }, []);
 
   // Fetch news articles 
- const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000" ||"https://disaster-3hvn.onrender.com";
+//  const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000" ||"https://disaster-3hvn.onrender.com";
+ const API_BASE = "https://disaster-3hvn.onrender.com";
+
 
 const fetchDisasterNews = async () => {
   setLoading(true);
