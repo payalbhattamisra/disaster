@@ -20,7 +20,7 @@ function NgoDashboard() {
     // Fetch victim stats and store victim data
     const fetchVictimStats = async () => {
       try {
-        const res = await fetch('http://disaster-3hvn.onrender.com/api/victim/all');
+        const res = await fetch('https://disaster-3hvn.onrender.com/api/victim/all');
         const data = await res.json();
 
         setVictims(data); // store full victim data for map
@@ -42,7 +42,7 @@ function NgoDashboard() {
     // Fetch volunteer activity
     const fetchVolunteerActivity = async () => {
       try {
-        const res = await fetch('http://disaster-3hvn.onrender.com/api/ngo/activity'); 
+        const res = await fetch('https://disaster-3hvn.onrender.com/api/ngo/activity'); 
         const data = await res.json();
         setVolunteerActivity(data);
       } catch (err) {
@@ -53,7 +53,7 @@ function NgoDashboard() {
     // Fetch inventory
     const fetchInventory = async () => {
       try {
-        const res = await fetch('http://disaster-3hvn.onrender.com/api/inventory'); 
+        const res = await fetch('https://disaster-3hvn.onrender.com/api/inventory'); 
         const data = await res.json();
         setInventory(data);
         setLowStock(data.filter(item => item.qty < 10));
@@ -163,7 +163,7 @@ function NgoDashboard() {
           const itemQty = parseInt(e.target.qty.value);
           if(!itemName || isNaN(itemQty)) return alert("Enter valid data");
           try {
-            const res = await fetch('http://disaster-3hvn.onrender.com/api/inventory/add', {
+            const res = await fetch('https://disaster-3hvn.onrender.com/api/inventory/add', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ item: itemName, qty: itemQty })

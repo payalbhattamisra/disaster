@@ -97,7 +97,7 @@ const volunteerId = volunteer?._id; // optional chaining prevents crash
 const updateStatus = async (id, newStatus) => {
   try {
     // PATCH request to update victim request status
-    const res = await fetch(`http://disaster-3hvn.onrender.com/api/victim/${id}/status`, {
+    const res = await fetch(`https://disaster-3hvn.onrender.com/api/victim/${id}/status`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
@@ -116,7 +116,7 @@ const updateStatus = async (id, newStatus) => {
     if (newStatus === "Completed") {
       // Update points
       const resPoints = await fetch(
-        `http://disaster-3hvn.onrender.com/api/volunteer/${volunteer._id}/points`,
+        `https://disaster-3hvn.onrender.com/api/volunteer/${volunteer._id}/points`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -138,7 +138,7 @@ const updateStatus = async (id, newStatus) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://disaster-3hvn.onrender.com/api/victim/all");
+        const res = await fetch("https://disaster-3hvn.onrender.com/api/victim/all");
         const data = await res.json();
 
         const parsedData = await Promise.all(
