@@ -114,23 +114,30 @@ const LandingPage = () => {
       navigate('/lostfound');
     }
   };
-
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
       <div className="heading">
-        <header className='head'>
-          <div className="logo">Sarathi</div>
-          <nav className='nav-links'>
-            <a href="#home">Home</a>
-            <a href="#features">Feature</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <div className="auth-buttons">
-            <button className="loginbtn">Login</button>
-            <button className="signupbtn">Sign Up</button>
-          </div>
-        </header>
+         <header className="head">
+      <div className="logo">Sarathi</div>
+
+      {/* Hamburger icon */}
+      <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        ☰
+      </div>
+
+      <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+        <a href="#home">Home</a>
+        <a href="#features">Feature</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div className={`auth-buttons ${menuOpen ? "open" : ""}`}>
+        <button className="loginbtn">Login</button>
+        <button className="signupbtn">Sign Up</button>
+      </div>
+    </header>
 
         <div className="mainbody">
           <div className="image-section"> 
