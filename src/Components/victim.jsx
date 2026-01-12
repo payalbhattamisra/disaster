@@ -70,7 +70,7 @@ const Victim = () => {
       return res.json();
     })
     .then((data) => {
-      alert("✅ Submitted successfully! SMS sent automatically.");
+      alert("✅ Submitted successfully! Email sent automatically.");
       console.log("Response:", data);
 
       // Clear form

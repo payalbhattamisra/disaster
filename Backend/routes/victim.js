@@ -3,7 +3,8 @@ const router = express.Router();
 const VictimRequest = require("../models/VictimRequest");
 const multer = require("multer");
 const path = require("path");
-const sendSMS = require("../sms_service");
+//const sendSMS = require("../sms_service");
+const nodemailer = require("nodemailer");
 // Multer config
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -14,6 +15,34 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+//Gmail verfication 
+const sendEmail = async (data) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: `"Disaster Alert System" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_USER,
+    subject: "🚨 New Disaster Help Request",
+    html: `
+      <h2>New Help Request</h2>
+      <p><b>Name:</b> ${data.name}</p>
+      <p><b>Contact:</b> ${data.contact}</p>
+      <p><b>Location:</b> ${data.location}</p>
+      <p><b>Help Type:</b> ${data.typeOfHelp}</p>
+      <p><b>Urgency:</b> ${data.urgency}</p>
+      <p><b>People Affected:</b> ${data.peopleCount}</p>
+      <p><b>Description:</b> ${data.description}</p>
+    `,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
 
 // Helper to extract lat/lng from string
 function parseLatLng(location) {
@@ -59,22 +88,37 @@ router.post("/submit", upload.single("photo"), async (req, res) => {
 
  const [lat, lng] = parseLatLng(location);
 
-const smsBody = `🚨 HELP REQUEST 🚨
-Name: ${name}
-Contact: ${contact}
-Location: Lat:${lat}, Lng:${lng}
-Type: ${typeOfHelp}
-Urgency: ${urgency}
-People: ${peopleCount}
-Description: ${description}`;
+// const smsBody = `🚨 HELP REQUEST 🚨
+// Name: ${name}
+// Contact: ${contact}
+// Location: Lat:${lat}, Lng:${lng}
+// Type: ${typeOfHelp}
+// Urgency: ${urgency}
+// People: ${peopleCount}
+// Description: ${description}`;
 
 
     // Send SMS automatically via Twilio
-    await sendSMS(smsBody);
+    //await sendSMS(smsBody);
 
-    console.log("✅ SMS sent successfully");
+    //console.log("✅ SMS sent successfully");
+    await sendEmail({
+        name,
+        contact,
+        location,
+        typeOfHelp,
+        urgency,
+        peopleCount,
+        description,
+      });
 
-    res.status(201).json({ message: "Request saved and SMS sent successfully." });
+      console.log("✅ Email sent successfully");
+
+
+    res.status(201).json({
+        message: "Request saved and email sent successfully.",
+      });
+
   } catch (error) {
     console.error("❌ Error saving request:", error);
     res.status(500).json({ error: "Server error", details: error.message });
